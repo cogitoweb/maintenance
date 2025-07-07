@@ -209,11 +209,11 @@ class MaintenanceEquipment(models.Model):
                 ('stage_id.done', '!=', True),
                 ('close_date', '=', False)
             ]).mapped('request_date')
-            if len(next_plan_dates + next_unplanned_dates) <= 0:
+            all_dates = filter(lambda item: issubclass(item, str), next_plan_dates + next_unplanned_dates)
+            if len(all_dates) <= 0:
                 equipment.next_action_date = None
             else:
-                equipment.next_action_date = min(next_plan_dates +
-                                                 next_unplanned_dates)
+                equipment.next_action_date = min(all_dates)
 
 
 class MaintenanceRequest(models.Model):
